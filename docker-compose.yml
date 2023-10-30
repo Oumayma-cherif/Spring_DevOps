@@ -29,6 +29,6 @@ services:
       - mysqldb  # Ensure the MySQL service is started before the application
     volumes:
       - app_data:/app/data
-  volumes:
+volumes:
     app_data:  # Define the app_data volume
     db:
