@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - /home/mysql/data:/var/lib/mysql
+      
+  spring-app:
+    image: achatproject
+    container_name: achatproject
+    ports:
+      - 9090:9090
+    depends_on:
+      - mysqldb
