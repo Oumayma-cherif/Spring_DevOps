@@ -3,17 +3,32 @@ version: "3.9"
 services:
   mysqldb:
     container_name: mysqldb
-    image: mysql:8
-    restart: unless-stopped
+    image: mysql:5.7  # You can use a different version if needed
     environment:
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - /home/mysql/data:/var/lib/mysql
-      
-  spring-app:
-    image: achatproject
-    container_name: achatproject
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: kaddemProject
     ports:
-      - 9090:9090
+      - "3306:3306"  # Map MySQL's port to the host
+
+    volumes:
+      - db:/var/lib/mysql
+  app:
+    container_name: kaddemProject
+    image: dalimoualhi/backend  # Replace with the actual image and tag
+    restart: on-failure
+    environment:
+      SPRING_APPLICATION_JSON: '{
+      "spring.datasource.url" : "jdbc:mysql://mysqldb:3306/kaddemProject?createDatabaseIfNotExist=true",
+      "spring.datasource.username" : "root",
+      "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+      "spring.jpa.hibernate.ddl-auto" : "update"
+      }'
+    ports:
+      - "8089:8089"  # Map your application's port to the host
     depends_on:
-      - mysqldb
+      - mysqldb  # Ensure the MySQL service is started before the application
+    volumes:
+      - app_data:/app/data
+  volumes:
+    app_data:  # Define the app_data volume
+    db:
