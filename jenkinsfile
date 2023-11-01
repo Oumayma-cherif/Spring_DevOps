@@ -1,0 +1,86 @@
+pipeline {
+
+    agent{ label 'agent-ubuntu2'}
+    environment {
+    
+        NEXUS_CREDENTIALS = credentials('nexusconf')
+        DOCKER_CREDENTIALS = credentials('dockerhubconfig')
+
+    }
+    tools {
+        maven 'M2_HOME' 
+    }
+
+    stages {
+    stage ('GIT') {
+            steps {
+               echo "Getting Project from Git"; 
+                git branch: "main", 
+                    url: "https://github.com/moualhimedali/Spring_DevOps";
+            }
+        }
+    
+    stage("Build") {
+             steps {
+                sh "mvn clean package -DskipTests"
+            }
+        }
+        stage('Publish to Nexus') {
+             steps {
+                sh "mvn deploy -DskipTests"
+        
+                }
+            }
+        /*stage("SonarQube Analysis") {
+            steps {
+                sh "mvn sonar:sonar -Dsonar-token=sonarqube-token"
+                
+            }
+        }*/
+          /*stage('MVN SONARQUBE') {
+            steps {
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar -Dmaven.test.skip=true';
+
+            }
+        }*/
+        
+        stage('Build Docker Image Backend') {
+            steps {
+                script {
+                    sh "docker build -t dalimoualhi/backend ."
+                        }
+                    }
+    }
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhubconfig', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                    script {
+                        sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
+                        sh "docker push dalimoualhi/backend"
+                            }
+                    }
+    }
+}
+        stage('Verify Docker Compose Installation') {
+            steps {
+                sh 'docker compose version'
+                    }
+}
+
+        stage('Start Docker Compose') {
+            steps {
+                script {
+                    sh 'docker compose up -d'
+                    }
+                }
+            }
+        stage('check Docker Compose') {
+            steps {
+                script {
+                        sh 'docker compose ps'
+                    }
+                }
+            }
+        
+}
+}
