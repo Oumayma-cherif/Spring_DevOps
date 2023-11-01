@@ -31,20 +31,20 @@ pipeline {
         
                 }
             }
-        /*stage("SonarQube Analysis") {
+        stage("SonarQube Analysis") {
             steps {
                 sh "mvn sonar:sonar -Dsonar-token=sonarqube-token"
                 
             }
-        }*/
-          /*stage('MVN SONARQUBE') {
+        }
+          stage('MVN SONARQUBE') {
             steps {
                 sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar -Dmaven.test.skip=true';
 
             }
-        }*/
+        }
         
-        stage('Build Docker Image Backend') {
+        /*stage('Build Docker Image Backend') {
             steps {
                 script {
                     sh "docker build -t dalimoualhi/backend ."
@@ -60,7 +60,7 @@ pipeline {
                             }
                     }
     }
-}
+}*/
         stage('Verify Docker Compose Installation') {
             steps {
                 sh 'docker compose version'
