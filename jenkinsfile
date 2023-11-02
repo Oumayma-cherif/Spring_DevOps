@@ -61,7 +61,7 @@ pipeline {
                     }
 }
 
-        stage('Start Docker Compose') {
+        /*stage('Start Docker Compose') {
             steps {
                 script {
                     sh 'docker compose up -d'
@@ -74,7 +74,7 @@ pipeline {
                         sh 'docker compose ps'
                     }
                 }
-            }
+            }*/
         
 }
 }
