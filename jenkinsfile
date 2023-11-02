@@ -81,6 +81,11 @@ pipeline {
 
             }
         }
+        stage('Tests') {
+                script {
+                    sh 'mvn test'
+                	}
+                }
         
 }
 }
