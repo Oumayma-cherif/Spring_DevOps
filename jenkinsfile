@@ -82,7 +82,7 @@ pipeline {
             }
         }*/
         stage('Tests') {
-                script {
+                steps {
                     sh 'mvn test'
                 	}
                 }
