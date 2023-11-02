@@ -31,12 +31,12 @@ pipeline {
         
                 }
             }
-          /*stage('MVN SONARQUBE') {
+          stage('MVN SONARQUBE') {
             steps {
                 sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar -Dmaven.test.skip=true';
 
             }
-        }*/
+        }
         
         /*stage('Build Docker Image Backend') {
             steps {
@@ -61,7 +61,7 @@ pipeline {
                     }
 }*/
 
-        /*stage('Start Docker Compose') {
+        stage('Start Docker Compose') {
             steps {
                 script {
                     sh 'docker compose up -d'
@@ -74,18 +74,12 @@ pipeline {
                         sh 'docker compose ps'
                     }
                 }
-            }*/
-        /*stage('MVN SONARQUBE') {
-            steps {
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar -Dmaven.test.skip=true';
-
             }
-        }*/
-        stage('Tests') {
+        /*stage('Tests') {
                 steps {
                     sh 'mvn test'
                 	}
-                }
+                }*/
         
 }
 }
