@@ -83,7 +83,6 @@ pipeline {
         }
         stage('Mockito Tests') {
             steps {
-                script {
                     sh 'mvn test -Pmockito-tests'
                 	}
                 }
