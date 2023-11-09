@@ -76,13 +76,7 @@ pipeline {
                     }
                 }
             }
-        stage('Email') {
-            steps {
-                script {
-                        emailext attachLog: true, body: 'test_mail', subject: 'test_mail', to: 'mohamedali.moualhi@esprit.tn'
-                    }
-                }
-        }
+        
         /*stage('Tests') {
                 steps {
                     sh 'mvn test'
@@ -91,4 +85,20 @@ pipeline {
 
         
 }
+post {
+        success {
+            emailext (
+                subject: "Build Successful: ${currentBuild.fullDisplayName}",
+                body: "The build ${currentBuild.fullDisplayName} has completed successfully.",
+                to: 'mohamedali.moualhi@esprit.tn' // Replace with the recipient's email address
+            )
+        }
+        failure {
+            emailext (
+                subject: "Build Failed: ${currentBuild.fullDisplayName}",
+                body: "The build ${currentBuild.fullDisplayName} has failed.",
+                to: 'mohamedali.moualhi@esprit.tn' // Replace with the recipient's email address
+            )
+        }
+    }
 }
