@@ -82,8 +82,7 @@ pipeline {
                         emailext attachLog: true, body: 'test_mail', subject: 'test_mail', to: 'mohamedali.moualhi@esprit.tn'
                     }
                 }
-        }
-        
+        }        
         /*stage('Tests') {
                 steps {
                     sh 'mvn test'
